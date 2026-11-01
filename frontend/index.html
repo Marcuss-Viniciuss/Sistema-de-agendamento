@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navalha · Marcações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ecrã 1: autenticação -->
+  <section id="ecra-login" class="login" hidden>
+    <div class="login-marca">
+      <span class="logo">Navalha</span>
+      <p>Corte, barba e estilo. Marca a tua hora em segundos.</p>
+    </div>
+    <div class="login-cartao">
+      <div class="separadores" role="tablist">
+        <button type="button" role="tab" id="tab-entrar" class="ativo" aria-selected="true">Entrar</button>
+        <button type="button" role="tab" id="tab-registo" aria-selected="false">Criar conta</button>
+      </div>
+
+      <form id="form-login" novalidate>
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" autocomplete="email" required>
+        <label for="login-password">Palavra-passe</label>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+        <button type="submit" class="btn primario">Entrar</button>
+      </form>
+
+      <form id="form-registo" novalidate hidden>
+        <label for="reg-nome">Nome</label>
+        <input id="reg-nome" type="text" autocomplete="name" maxlength="100" required>
+        <label for="reg-email">Email</label>
+        <input id="reg-email" type="email" autocomplete="email" required>
+        <label for="reg-password">Palavra-passe <span class="ajuda">(mínimo 8 caracteres)</span></label>
+        <input id="reg-password" type="password" autocomplete="new-password" minlength="8" required>
+        <button type="submit" class="btn primario">Criar conta</button>
+      </form>
+
+      <p id="erro-login" class="erro-form" role="alert" hidden></p>
+    </div>
+  </section>
+
+  <!-- Ecrã 2: painel principal -->
+  <div id="ecra-app" hidden>
+    <header class="navbar">
+      <div class="navbar-conteudo">
+        <span class="logo">Navalha</span>
+        <nav aria-label="Principal"><a href="#" class="nav-link ativo">Painel</a></nav>
+        <div class="utilizador">
+          <span id="nome-utilizador"></span>
+          <span id="papel-utilizador" class="etiqueta"></span>
+          <button type="button" id="btn-sair" class="btn secundario pequeno">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="conteudo">
+      <div class="cabecalho">
+        <div>
+          <h1 id="titulo-pagina">Agendamentos</h1>
+          <p id="subtitulo-pagina" class="suave"></p>
+        </div>
+        <button type="button" id="btn-novo" class="btn primario">Novo agendamento</button>
+      </div>
+
+      <section class="estatisticas" aria-label="Resumo">
+        <article class="cartao stat"><span class="suave">Marcações de hoje</span><strong id="stat-hoje">0</strong></article>
+        <article class="cartao stat"><span class="suave">Pendentes</span><strong id="stat-pendentes">0</strong></article>
+        <article class="cartao stat"><span class="suave">Concluídos</span><strong id="stat-concluidos">0</strong></article>
+      </section>
+
+      <section class="cartao tabela-cartao">
+        <div class="filtros" role="group" aria-label="Filtrar">
+          <button type="button" class="filtro ativo" data-filtro="todos">Todos</button>
+          <button type="button" class="filtro" data-filtro="hoje">Hoje</button>
+          <button type="button" class="filtro" data-filtro="pendente">Pendentes</button>
+          <button type="button" class="filtro" data-filtro="concluido">Concluídos</button>
+        </div>
+        <div class="tabela-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th><th>Hora</th><th class="so-admin">Cliente</th>
+                <th>Serviço</th><th>Estado</th><th class="so-admin col-acoes">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-tabela"></tbody>
+          </table>
+        </div>
+        <p id="vazio" class="vazio" hidden></p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal: novo agendamento -->
+  <dialog id="modal">
+    <form id="form-agendamento" novalidate>
+      <h2>Novo agendamento</h2>
+      <div id="campo-cliente" hidden>
+        <label for="ag-cliente">Cliente</label>
+        <input id="ag-cliente" type="text" maxlength="100" placeholder="Nome do cliente">
+      </div>
+      <label for="ag-servico">Serviço</label>
+      <select id="ag-servico" required>
+        <option value="" selected disabled>Escolhe o serviço</option>
+        <option>Corte Degradê</option>
+        <option>Corte Clássico</option>
+        <option>Barba</option>
+        <option>Sobrancelha</option>
+        <option>Corte Infantil</option>
+      </select>
+      <label for="ag-data">Data</label>
+      <input id="ag-data" type="date" required>
+      <p id="slots-estado" class="suave slots-estado"></p>
+      <div id="slots" class="slots" role="group" aria-labelledby="slots-estado"></div>
+      <p id="erro-modal" class="erro-form" role="alert" hidden></p>
+      <div class="modal-acoes">
+        <button type="button" id="btn-fechar" class="btn secundario">Fechar</button>
+        <button type="submit" id="btn-guardar" class="btn primario" disabled>Guardar agendamento</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="avisos" class="avisos" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
